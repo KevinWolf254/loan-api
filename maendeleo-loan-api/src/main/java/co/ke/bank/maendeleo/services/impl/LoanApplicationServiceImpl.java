@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.ke.bank.maendeleo.RestResponseExceptionHandler;
 import co.ke.bank.maendeleo.entities.Account;
 import co.ke.bank.maendeleo.entities.LoanAmount;
 import co.ke.bank.maendeleo.entities.LoanApplication;
@@ -27,9 +30,12 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	@Autowired
 	private LoanAmountRepository amountRepo;
 	
+	private final static Logger LOG = LoggerFactory.getLogger(LoanApplicationServiceImpl.class);
+
 	@Override
 	public Response create(final LoanApplicationRequest request) {
 		final Optional<Account> account = accountRepo.findByMemberId(request.getMemberId());
+		LOG.info("member id: " + request.getMemberId());
 		if(!account.isPresent()) 
 			return new Response(400, "Bad Request");
 		
