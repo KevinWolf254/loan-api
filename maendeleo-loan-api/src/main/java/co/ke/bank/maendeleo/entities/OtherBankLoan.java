@@ -13,10 +13,15 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
-property="id")
+//to prevent recursion issues
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+
+//ignore unknown or missing properties during deserialization
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 @Entity
 @Table(name="other_bank_loan")
 public class OtherBankLoan {
@@ -77,7 +82,7 @@ public class OtherBankLoan {
 	public void setRepaymentPeriod(String repaymentPeriod) {
 		this.repaymentPeriod = repaymentPeriod;
 	}
-	@JsonIgnore
+//	@JsonIgnore
 	public Bank getBank() {
 		return bank;
 	}
@@ -91,11 +96,19 @@ public class OtherBankLoan {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	@JsonIgnore
+//	@JsonIgnore
 	public OtherBankLoanAmount getAmount() {
 		return amount;
 	}
 	public void setAmount(OtherBankLoanAmount amount) {
 		this.amount = amount;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("OtherBankLoan [dateGranted=").append(dateGranted).append(", repaymentPeriod=")
+				.append(repaymentPeriod).append(", bank=").append(bank).append(", account=").append(account)
+				.append(", amount=").append(amount).append("]");
+		return builder.toString();
 	}
 }

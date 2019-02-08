@@ -7,13 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import co.ke.bank.maendeleo.enums.Currency;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
-property="id")
+//ignore unknown or missing properties during de_serialization
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 @Entity
 @Table(name="other_bank_loan_amount")
 public class OtherBankLoanAmount {
@@ -68,7 +68,7 @@ public class OtherBankLoanAmount {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("OtherBankLoanAmount [id=").append(id).append(", currency=").append(currency).append(", amount=")
+		builder.append("OtherBankLoanAmount [").append(", currency=").append(currency).append(", amount=")
 				.append(amount).append(", outstandingBalance=").append(outstandingBalance).append("]");
 		return builder.toString();
 	}

@@ -15,10 +15,15 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
-property="id")
+//to prevent recursion issues
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+
+//ignore unknown or missing properties during deserialization
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 @Entity
 @Table(name="bank")
 public class Bank {
@@ -78,5 +83,11 @@ public class Bank {
 	}
 	public void setOtherLoans(List<OtherBankLoan> otherLoans) {
 		this.otherLoans = otherLoans;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Bank [code=").append(code).append(", name=").append(name).append("]");
+		return builder.toString();
 	}
 }

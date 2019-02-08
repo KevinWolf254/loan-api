@@ -14,13 +14,17 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import co.ke.bank.maendeleo.enums.LoanStatus;
 import co.ke.bank.maendeleo.enums.LoanType;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
-property="id")
+//to prevent recursion issues
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+//ignore unknown or missing properties during de_serialization
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 @Entity
 @Table(name="loan_application")
 public class LoanApplication {
@@ -95,5 +99,12 @@ public class LoanApplication {
 	}
 	public void setAmount(LoanAmount amount) {
 		this.amount = amount;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("LoanApplication [type=").append(type).append(", purpose=").append(purpose).append(", status=")
+				.append(status).append(", account=").append(account).append(", amount=").append(amount).append("]");
+		return builder.toString();
 	}
 }

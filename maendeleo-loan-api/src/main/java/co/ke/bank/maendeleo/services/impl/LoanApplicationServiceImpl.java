@@ -13,9 +13,7 @@ import co.ke.bank.maendeleo.entities.LoanAmount;
 import co.ke.bank.maendeleo.entities.LoanApplication;
 import co.ke.bank.maendeleo.entities.OtherBankLoan;
 import co.ke.bank.maendeleo.entities.OtherBankLoanAmount;
-import co.ke.bank.maendeleo.enums.LoanStatus;
-import co.ke.bank.maendeleo.pojos.Application;
-import co.ke.bank.maendeleo.pojos.LoanApplicationRequest;
+import co.ke.bank.maendeleo.pojos.ApplicationRequest;
 import co.ke.bank.maendeleo.pojos.Response;
 import co.ke.bank.maendeleo.repositories.AccountRepository;
 import co.ke.bank.maendeleo.repositories.BankRepository;
@@ -42,39 +40,39 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	private BankRepository bankRepo;
 
 	@Override
-	public Response create(final LoanApplicationRequest request) {
-		// find member's account by member id
-		final Optional<Account> account = accountRepo.findByMemberIdentityNo(request.getMemberId());
+	public Response create(final ApplicationRequest application) {		
+		// find member's account by member id no
+		final Optional<Account> account = accountRepo.findByMemberIdentityNo(application.getIdentityNo());
 		if (!account.isPresent())
 			return new Response(400, "Bad Request");
 		
 		// save loan amount
-		final LoanAmount amount = amountRepo
-				.save(new LoanAmount(request.getAmount().getCurrency(), request.getAmount().getAmount()));
+		final LoanAmount amount = amountRepo.save(application.getLoan().getAmount());
 		
 		// get application details and save application
-		final Application _app = request.getApplication();
-		repo.save(new LoanApplication(_app.getType(), _app.getPurpose(), LoanStatus.PENDING, account.get(), amount));
+		final LoanApplication _app = application.getLoan();
+		_app.setAmount(amount);
+		_app.setAccount(account.get());
+		repo.save(_app);
 
 		// determine if there are other bank loans
-		if (!request.getOtherLoans().isEmpty()) {
+		if (!application.getOtherLoans().isEmpty()) {
 			// iterate through the array
-			request.getOtherLoans().stream().forEach(loan -> {
+			application.getOtherLoans().stream().forEach(loan -> {
 				// save details of other loans
-				final Optional<Bank> bank = bankRepo.findByName(loan.getBankName());
+				final Optional<Bank> bank = bankRepo.findByName(loan.getBank().getName());
 				if (bank.isPresent()) {
 						// save loan amount
-						final OtherBankLoanAmount amountL = amountLoanRepo.save(new OtherBankLoanAmount(
-								loan.getCurrency(), loan.getAmount(), loan.getOutStandingBalance()));
+						final OtherBankLoanAmount additionalAmount = amountLoanRepo.save(loan.getAmount());
 						// save loan
 						otherLoanRepo.save(new OtherBankLoan(loan.getDateGranted(), loan.getRepaymentPeriod(),
-								bank.get(), account.get(), amountL));
+								bank.get(), account.get(), additionalAmount));
 				}
 			});
 		}
 		return new Response(200, "Successfully added loan application");
 	}
-
+	
 	@Override
 	public List<LoanApplication> read(final int memberIdNo) {
 		final Optional<Account> account = accountRepo.findByMemberIdentityNo(memberIdNo);
@@ -85,8 +83,16 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	}
 
 	@Override
-	public Response update(final LoanApplication application) {
-		repo.save(application);
+	public Response update(final LoanApplication request) {
+		final Optional<LoanApplication> _loan = repo.findById(request.getId());
+		
+		if(!_loan.isPresent())
+			return new Response(400, "Bad Request: Application does not exist");
+		
+		final LoanApplication loan = _loan.get();
+		loan.setStatus(request.getStatus());		
+		repo.save(loan);
+		
 		return new Response(200, "Successfully updated loan application");
 	}
 

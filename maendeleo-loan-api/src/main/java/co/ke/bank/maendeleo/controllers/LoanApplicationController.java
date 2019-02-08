@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.ke.bank.maendeleo.entities.LoanApplication;
-import co.ke.bank.maendeleo.pojos.LoanApplicationRequest;
+import co.ke.bank.maendeleo.pojos.ApplicationRequest;
 import co.ke.bank.maendeleo.pojos.Response;
 import co.ke.bank.maendeleo.services.LoanApplicationService;
 
@@ -27,7 +27,7 @@ public class LoanApplicationController {
 	private LoanApplicationService service;
 	
 	@PostMapping(value = "/loan")
-	public ResponseEntity<Object> create(@RequestBody final LoanApplicationRequest application){
+	public ResponseEntity<Object> create(@RequestBody final ApplicationRequest application){
 		final Response response = service.create(application);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
@@ -44,7 +44,7 @@ public class LoanApplicationController {
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 	
-	@DeleteMapping(value = "/loan{loanId}")
+	@DeleteMapping(value = "/loan/{loanId}")
 	public ResponseEntity<Object> delete(@PathVariable("loanId") final Long loanId){
 		final Response response = service.delete(loanId);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
