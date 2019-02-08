@@ -27,13 +27,19 @@ public class OtherBankLoanAmount {
 	private Currency currency;
 	
 	@Column(name="amount", nullable=false)
-	private double amount;
+	private int amount;
 	
 	@Column(name="outstanding_balance", nullable=false)
-	private double outstandingBalance;
+	private int outstandingBalance;
 	
 	public OtherBankLoanAmount() {
 		super();
+	}
+	public OtherBankLoanAmount(Currency currency, int amount, int outstandingBalance) {
+		super();
+		this.currency = currency;
+		this.amount = amount;
+		this.outstandingBalance = outstandingBalance;
 	}
 	public Long getId() {
 		return id;
@@ -47,16 +53,16 @@ public class OtherBankLoanAmount {
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
-	public double getAmount() {
+	public int getAmount() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public double getOutstandingBalance() {
+	public int getOutstandingBalance() {
 		return outstandingBalance;
 	}
-	public void setOutstandingBalance(double outstandingBalance) {
+	public void setOutstandingBalance(int outstandingBalance) {
 		this.outstandingBalance = outstandingBalance;
 	}
 	@Override

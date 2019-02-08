@@ -1,15 +1,22 @@
 package co.ke.bank.maendeleo.pojos;
 
+import co.ke.bank.maendeleo.enums.LoanType;
+
 public class Application {
 
 	private String type;
 	private String purpose;
 	private String status;
+	
 	public Application() {
 		super();
 	}
-	public String getType() {
-		return type;
+	public LoanType getType() {
+		if(type == "normal")
+			return LoanType.NORMAL;
+		if(type == "development")
+			return LoanType.DEVELOPMENT;
+		return LoanType.EMERGENCY;
 	}
 	public void setType(String type) {
 		this.type = type;

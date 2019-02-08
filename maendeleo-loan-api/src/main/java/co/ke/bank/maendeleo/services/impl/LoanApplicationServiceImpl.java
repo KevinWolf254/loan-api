@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.ke.bank.maendeleo.RestResponseExceptionHandler;
 import co.ke.bank.maendeleo.entities.Account;
+import co.ke.bank.maendeleo.entities.Bank;
 import co.ke.bank.maendeleo.entities.LoanAmount;
 import co.ke.bank.maendeleo.entities.LoanApplication;
+import co.ke.bank.maendeleo.entities.OtherBankLoan;
+import co.ke.bank.maendeleo.entities.OtherBankLoanAmount;
+import co.ke.bank.maendeleo.enums.LoanStatus;
+import co.ke.bank.maendeleo.pojos.Application;
 import co.ke.bank.maendeleo.pojos.LoanApplicationRequest;
 import co.ke.bank.maendeleo.pojos.Response;
 import co.ke.bank.maendeleo.repositories.AccountRepository;
+import co.ke.bank.maendeleo.repositories.BankRepository;
 import co.ke.bank.maendeleo.repositories.LoanAmountRepository;
 import co.ke.bank.maendeleo.repositories.LoanApplicationRepository;
+import co.ke.bank.maendeleo.repositories.OtherLoanAmountRepository;
+import co.ke.bank.maendeleo.repositories.OtherLoanRepository;
 import co.ke.bank.maendeleo.services.LoanApplicationService;
 
 @Service
@@ -29,31 +34,53 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	private AccountRepository accountRepo;
 	@Autowired
 	private LoanAmountRepository amountRepo;
-	
-	private final static Logger LOG = LoggerFactory.getLogger(LoanApplicationServiceImpl.class);
+	@Autowired
+	private OtherLoanAmountRepository amountLoanRepo;
+	@Autowired
+	private OtherLoanRepository otherLoanRepo;
+	@Autowired
+	private BankRepository bankRepo;
 
 	@Override
 	public Response create(final LoanApplicationRequest request) {
-		final Optional<Account> account = accountRepo.findByMemberId(request.getMemberId());
-		LOG.info("member id: " + request.getMemberId());
-		if(!account.isPresent()) 
+		// find member's account by member id
+		final Optional<Account> account = accountRepo.findByMemberIdentityNo(request.getMemberId());
+		if (!account.isPresent())
 			return new Response(400, "Bad Request");
 		
-//		final LoanApplication application = request.getApplication();
-//		final LoanAmount amount = amountRepo.save(request.getAmount());
-//		application.setAccount(account.get());
-//		application.setAmount(amount);
+		// save loan amount
+		final LoanAmount amount = amountRepo
+				.save(new LoanAmount(request.getAmount().getCurrency(), request.getAmount().getAmount()));
 		
-//		repo.save(application);
+		// get application details and save application
+		final Application _app = request.getApplication();
+		repo.save(new LoanApplication(_app.getType(), _app.getPurpose(), LoanStatus.PENDING, account.get(), amount));
+
+		// determine if there are other bank loans
+		if (!request.getOtherLoans().isEmpty()) {
+			// iterate through the array
+			request.getOtherLoans().stream().forEach(loan -> {
+				// save details of other loans
+				final Optional<Bank> bank = bankRepo.findByName(loan.getBankName());
+				if (bank.isPresent()) {
+						// save loan amount
+						final OtherBankLoanAmount amountL = amountLoanRepo.save(new OtherBankLoanAmount(
+								loan.getCurrency(), loan.getAmount(), loan.getOutStandingBalance()));
+						// save loan
+						otherLoanRepo.save(new OtherBankLoan(loan.getDateGranted(), loan.getRepaymentPeriod(),
+								bank.get(), account.get(), amountL));
+				}
+			});
+		}
 		return new Response(200, "Successfully added loan application");
 	}
 
 	@Override
 	public List<LoanApplication> read(final Long memberIdNo) {
 		final Optional<Account> account = accountRepo.findByMemberId(memberIdNo);
-		if(!account.isPresent()) 
+		if (!account.isPresent())
 			return new ArrayList<LoanApplication>();
-		
+
 		return repo.findByAccountId(account.get().getId());
 	}
 
@@ -68,5 +95,4 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 		repo.deleteById(loanId);
 		return new Response(200, "Successfully deleted loan application");
 	}
-
 }

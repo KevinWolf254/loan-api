@@ -4,7 +4,7 @@ RUN mkdir -p /loan-api
 
 WORKDIR /loan-api
 
-ADD ./target/paybill-api.jar ./paybill-api.jar
+ADD ./target/loan-api.jar ./loan-api.jar
 
 EXPOSE 8080
 

@@ -48,6 +48,14 @@ public class LoanApplication {
 	@JoinColumn(name = "amount_id", nullable = false)
 	private LoanAmount amount;
 	
+	public LoanApplication(LoanType type, String purpose, LoanStatus status, Account account, LoanAmount amount) {
+		super();
+		this.type = type;
+		this.purpose = purpose;
+		this.status = status;
+		this.account = account;
+		this.amount = amount;
+	}
 	public LoanApplication() {
 		super();
 	}

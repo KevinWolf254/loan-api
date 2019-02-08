@@ -27,10 +27,15 @@ public class LoanAmount {
 	private Currency currency;
 	
 	@Column(name="amount", nullable=false)
-	private double amount;
+	private int amount;
 	
 	public LoanAmount() {
 		super();
+	}
+	public LoanAmount(Currency currency, int amount) {
+		super();
+		this.currency = currency;
+		this.amount = amount;
 	}
 	public Long getId() {
 		return id;
@@ -47,7 +52,7 @@ public class LoanAmount {
 	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 	@Override

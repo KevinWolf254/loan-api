@@ -3,13 +3,10 @@ package co.ke.bank.maendeleo.pojos;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.ke.bank.maendeleo.entities.LoanAmount;
-import co.ke.bank.maendeleo.entities.LoanApplication;
-import co.ke.bank.maendeleo.entities.OtherBankLoan;
-
 public class LoanApplicationRequest {
 
-	private Long memberId;
+	private int memberId;
+	private String bankName;
 	private Application application;
 	private Amount amount;
 	private List<OtherBank> otherLoans = new ArrayList<OtherBank>();
@@ -17,11 +14,17 @@ public class LoanApplicationRequest {
 	public LoanApplicationRequest() {
 		super();
 	}
-	public Long getMemberId() {
+	public int getMemberId() {
 		return memberId;
 	}
-	public void setMemberId(Long memberId) {
+	public void setMemberId(int memberId) {
 		this.memberId = memberId;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 	public Application getApplication() {
 		return application;

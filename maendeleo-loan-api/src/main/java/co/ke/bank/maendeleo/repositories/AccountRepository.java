@@ -8,6 +8,9 @@ import co.ke.bank.maendeleo.entities.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
-	public Optional<Account> findByMemberId(Long memberIdNo);
+	public Optional<Account> findByMemberId(Long id);
+	
+	public Optional<Account> findByMemberIdentityNo(int idNo);
+
 
 }

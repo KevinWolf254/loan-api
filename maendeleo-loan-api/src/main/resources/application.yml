@@ -21,9 +21,9 @@ logging:
 spring:
   profiles: production
   datasource: 
-    url: jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD} 
+    url: jdbc:mysql://localhost:3306/maendeleo_db
+    username: mmcs_dbm
+    password: <9r0@q7iV3_1O>
   jpa:
     properties:
       hibernate:
@@ -33,7 +33,7 @@ spring:
 server:
   servlet:
     context-path: /api
-  port: ${SERVER_PORT}
+  port: 8080
 logging:
   level:
-    root: ${LOG_LEVEL} 
+    root: ERROR 

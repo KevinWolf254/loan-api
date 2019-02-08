@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
 property="id")
 @Entity
-@Table(name="bank")
+@Table(name="other_bank_loan")
 public class OtherBankLoan {
 
 	@Id
@@ -48,6 +48,15 @@ public class OtherBankLoan {
 	
 	public OtherBankLoan() {
 		super();
+	}
+	public OtherBankLoan(String dateGranted, String repaymentPeriod, Bank bank, Account account,
+			OtherBankLoanAmount amount) {
+		super();
+		this.dateGranted = dateGranted;
+		this.repaymentPeriod = repaymentPeriod;
+		this.bank = bank;
+		this.account = account;
+		this.amount = amount;
 	}
 	public Long getId() {
 		return id;
