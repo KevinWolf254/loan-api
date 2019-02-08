@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
@@ -76,18 +77,21 @@ public class OtherBankLoan {
 	public void setRepaymentPeriod(String repaymentPeriod) {
 		this.repaymentPeriod = repaymentPeriod;
 	}
+	@JsonIgnore
 	public Bank getBank() {
 		return bank;
 	}
 	public void setBank(Bank bank) {
 		this.bank = bank;
 	}
+	@JsonIgnore
 	public Account getAccount() {
 		return account;
 	}
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+	@JsonIgnore
 	public OtherBankLoanAmount getAmount() {
 		return amount;
 	}

@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
@@ -64,12 +65,14 @@ public class Bank {
 	public void setCode(String code) {
 		this.code = code;
 	}
+	@JsonIgnore
 	public List<Branch> getBranches() {
 		return branches;
 	}
 	public void setBranches(List<Branch> branches) {
 		this.branches = branches;
 	}
+	@JsonIgnore
 	public List<OtherBankLoan> getOtherLoans() {
 		return otherLoans;
 	}

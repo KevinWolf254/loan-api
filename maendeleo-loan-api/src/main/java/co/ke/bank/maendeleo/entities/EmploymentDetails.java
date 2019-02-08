@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import co.ke.bank.maendeleo.enums.EmploymentTerms;
@@ -40,8 +41,7 @@ public class EmploymentDetails {
 	@Column(name="info")
 	private String info;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 	
@@ -83,12 +83,14 @@ public class EmploymentDetails {
 	public void setInfo(String info) {
 		this.info = info;
 	}
+	@JsonIgnore
 	public Member getMember() {
 		return member;
 	}
 	public void setMember(Member member) {
 		this.member = member;
 	}
+	@JsonIgnore
 	public Institution getInstitution() {
 		return institution;
 	}

@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
@@ -36,8 +37,7 @@ public class Account {
 	@Column(name="name", nullable=false, unique=true)
 	private String name;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
@@ -89,12 +89,14 @@ public class Account {
 	public void setBranch(Branch branch) {
 		this.branch = branch;
 	}
+	@JsonIgnore
 	public List<LoanApplication> getLoanApplications() {
 		return loanApplications;
 	}
 	public void setLoanApplications(List<LoanApplication> loanApplications) {
 		this.loanApplications = loanApplications;
 	}
+	@JsonIgnore
 	public List<OtherBankLoan> getOtherLoans() {
 		return otherLoans;
 	}

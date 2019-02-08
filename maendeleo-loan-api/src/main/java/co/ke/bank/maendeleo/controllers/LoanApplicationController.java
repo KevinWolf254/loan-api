@@ -33,7 +33,7 @@ public class LoanApplicationController {
 	}
 	
 	@GetMapping(value = "/loan/{memberIdNo}")
-	public ResponseEntity<Object> read(@PathVariable("memberIdNo") final Long memberIdNo){
+	public ResponseEntity<Object> read(@PathVariable("memberIdNo") final int memberIdNo){
 		final List<LoanApplication> response = service.read(memberIdNo);
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}

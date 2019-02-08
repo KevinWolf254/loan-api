@@ -28,7 +28,7 @@ public class Residence {
 	private boolean owned;
 	
 	@Column(name="occupancy_duration")
-	private int occupancyDuration;
+	private String occupancyDuration;
 	
 	public Residence() {
 		super();
@@ -51,10 +51,10 @@ public class Residence {
 	public void setOwned(boolean owned) {
 		this.owned = owned;
 	}
-	public int getOccupancyDuration() {
+	public String getOccupancyDuration() {
 		return occupancyDuration;
 	}
-	public void setOccupancyDuration(int occupancyDuration) {
+	public void setOccupancyDuration(String occupancyDuration) {
 		this.occupancyDuration = occupancyDuration;
 	}
 	@Override

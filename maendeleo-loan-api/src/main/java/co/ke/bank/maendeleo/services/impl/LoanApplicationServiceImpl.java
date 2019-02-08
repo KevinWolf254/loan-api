@@ -76,8 +76,8 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	}
 
 	@Override
-	public List<LoanApplication> read(final Long memberIdNo) {
-		final Optional<Account> account = accountRepo.findByMemberId(memberIdNo);
+	public List<LoanApplication> read(final int memberIdNo) {
+		final Optional<Account> account = accountRepo.findByMemberIdentityNo(memberIdNo);
 		if (!account.isPresent())
 			return new ArrayList<LoanApplication>();
 
@@ -85,13 +85,13 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	}
 
 	@Override
-	public Response update(LoanApplication application) {
+	public Response update(final LoanApplication application) {
 		repo.save(application);
 		return new Response(200, "Successfully updated loan application");
 	}
 
 	@Override
-	public Response delete(Long loanId) {
+	public Response delete(final Long loanId) {
 		repo.deleteById(loanId);
 		return new Response(200, "Successfully deleted loan application");
 	}

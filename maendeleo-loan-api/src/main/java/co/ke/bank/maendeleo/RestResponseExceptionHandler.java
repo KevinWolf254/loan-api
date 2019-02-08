@@ -18,31 +18,32 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import co.ke.bank.maendeleo.pojos.ResponseBindError;
 import co.ke.bank.maendeleo.pojos.ResponseError;
 
-@ControllerAdvice
-public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
-	private final static Logger LOG = LoggerFactory.getLogger(RestResponseExceptionHandler.class);
-
-	@Override
-	  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-	      HttpHeaders headers, HttpStatus status, WebRequest request) {
-		final List<FieldError> bindErrors = ex.getBindingResult().getFieldErrors();
-        final List<String> errors = new ArrayList<>();
-        for (FieldError e : bindErrors){
-        	errors.add(e.getField() + ": " + e.getDefaultMessage());
-        }        
-		final ResponseBindError errorDetails = new ResponseBindError(status.value(), "Validation Errors", errors);
-		
-		LOG.error("MethodArgumentNotValidException: "+errorDetails);
-	    return new ResponseEntity<>(errorDetails, status);
-	  }
-	
-	@ExceptionHandler(value = {Exception.class})
-	protected ResponseEntity<Object> handleExceptions(Exception ex, WebRequest request) {
-		final HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
-		final int status = internalServerError.value();
-		final ResponseError response = new ResponseError(status, ex.getLocalizedMessage());
-		
-		LOG.error("Exception: "+response);
-		return new ResponseEntity<>(response, new HttpHeaders(), internalServerError);
-	}
-}
+//@ControllerAdvice
+public class RestResponseExceptionHandler {}
+//extends ResponseEntityExceptionHandler {
+//	private final static Logger LOG = LoggerFactory.getLogger(RestResponseExceptionHandler.class);
+//
+//	@Override
+//	  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+//	      HttpHeaders headers, HttpStatus status, WebRequest request) {
+//		final List<FieldError> bindErrors = ex.getBindingResult().getFieldErrors();
+//        final List<String> errors = new ArrayList<>();
+//        for (FieldError e : bindErrors){
+//        	errors.add(e.getField() + ": " + e.getDefaultMessage());
+//        }        
+//		final ResponseBindError errorDetails = new ResponseBindError(status.value(), "Validation Errors", errors);
+//		
+//		LOG.error("MethodArgumentNotValidException: "+errorDetails);
+//	    return new ResponseEntity<>(errorDetails, status);
+//	  }
+//	
+//	@ExceptionHandler(value = {Exception.class})
+//	protected ResponseEntity<Object> handleExceptions(Exception ex, WebRequest request) {
+//		final HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+//		final int status = internalServerError.value();
+//		final ResponseError response = new ResponseError(status, ex.getLocalizedMessage());
+//		
+//		LOG.error("Exception: "+response);
+//		return new ResponseEntity<>(response, new HttpHeaders(), internalServerError);
+//	}
+//}

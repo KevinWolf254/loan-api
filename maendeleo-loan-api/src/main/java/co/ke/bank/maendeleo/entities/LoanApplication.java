@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import co.ke.bank.maendeleo.enums.LoanStatus;
@@ -43,8 +44,7 @@ public class LoanApplication {
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "amount_id", nullable = false)
 	private LoanAmount amount;
 	
@@ -83,6 +83,7 @@ public class LoanApplication {
 	public void setPurpose(String purpose) {
 		this.purpose = purpose;
 	}
+	@JsonIgnore
 	public Account getAccount() {
 		return account;
 	}

@@ -10,7 +10,7 @@ public interface LoanApplicationService {
 
 	public Response create(LoanApplicationRequest application);
 	
-	public List<LoanApplication> read(Long memberIdNo);
+	public List<LoanApplication> read(int memberIdNo);
 	
 	public Response update(LoanApplication application);
 	

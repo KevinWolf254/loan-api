@@ -1,11 +1,8 @@
 package co.ke.bank.maendeleo.entities;
 
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,7 +46,7 @@ public class Member {
 	private String lastName;
 	
 	@Column(name="dob")
-	private Date dob;
+	private String dob;
 	
 	@Column(name="mobile_no", nullable=false, unique=true)
 	private String mobileNo;
@@ -63,13 +60,11 @@ public class Member {
 	@Column(name="dependents")
 	private int dependents;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "residence_id", nullable = false)
 	private Residence residence;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "postal_address_id", nullable = false)
 	private PostalAddress postalAddress;
 	
@@ -118,10 +113,10 @@ public class Member {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public Date getDob() {
+	public String getDob() {
 		return dob;
 	}
-	public void setDob(Date dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 	public String getMobileNo() {

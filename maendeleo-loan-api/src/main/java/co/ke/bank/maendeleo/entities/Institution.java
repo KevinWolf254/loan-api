@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import co.ke.bank.maendeleo.enums.Industry;
@@ -43,13 +44,11 @@ public class Institution {
 	@Column(name="years_operational")
 	private int yearsOperational;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "postal_address_id", nullable = false)
 	private PostalAddress postalAddress;
 	
-	@OneToOne(fetch = FetchType.LAZY, 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "residence_id", nullable = false)
 	private Residence residence;
 	
@@ -108,12 +107,14 @@ public class Institution {
 	public void setResidence(Residence residence) {
 		this.residence = residence;
 	}
+	@JsonIgnore
 	public List<Income> getIncomes() {
 		return incomes;
 	}
 	public void setIncomes(List<Income> incomes) {
 		this.incomes = incomes;
 	}
+	@JsonIgnore
 	public List<EmploymentDetails> getContracts() {
 		return contracts;
 	}
