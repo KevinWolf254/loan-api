@@ -63,6 +63,13 @@ public class LoanApplication {
 	public LoanApplication() {
 		super();
 	}
+	public LoanApplication(LoanType type, String purpose, LoanStatus status, LoanAmount amount) {
+		super();
+		this.type = type;
+		this.purpose = purpose;
+		this.status = status;
+		this.amount = amount;
+	}
 	public Long getId() {
 		return id;
 	}

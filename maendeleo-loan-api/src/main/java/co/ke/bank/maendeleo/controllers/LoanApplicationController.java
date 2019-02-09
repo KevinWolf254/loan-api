@@ -29,7 +29,7 @@ public class LoanApplicationController {
 	@PostMapping(value = "/loan")
 	public ResponseEntity<Object> create(@RequestBody final ApplicationRequest application){
 		final Response response = service.create(application);
-		return new ResponseEntity<Object>(response, HttpStatus.OK);
+		return new ResponseEntity<Object>(response, HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value = "/loan/{memberIdNo}")
@@ -41,7 +41,7 @@ public class LoanApplicationController {
 	@PutMapping(value = "/loan")
 	public ResponseEntity<Object> update(@RequestBody final LoanApplication application){
 		final Response response = service.update(application);
-		return new ResponseEntity<Object>(response, HttpStatus.OK);
+		return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping(value = "/loan/{loanId}")

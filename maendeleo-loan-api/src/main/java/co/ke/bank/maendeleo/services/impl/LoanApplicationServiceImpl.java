@@ -70,7 +70,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 				}
 			});
 		}
-		return new Response(200, "Successfully added loan application");
+		return new Response(201, "Successfully Created");
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 		loan.setStatus(request.getStatus());		
 		repo.save(loan);
 		
-		return new Response(200, "Successfully updated loan application");
+		return new Response(202, "Successfully updated loan application");
 	}
 
 	@Override
