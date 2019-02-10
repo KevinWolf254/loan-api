@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.ke.bank.maendeleo.entities.LoanApplication;
+import co.ke.bank.maendeleo.exceptions.AccountNotFoundException;
+import co.ke.bank.maendeleo.exceptions.LoanApplicationNotFoundException;
 import co.ke.bank.maendeleo.pojos.ApplicationRequest;
 import co.ke.bank.maendeleo.pojos.Response;
 import co.ke.bank.maendeleo.services.LoanApplicationService;
@@ -27,7 +29,7 @@ public class LoanApplicationController {
 	private LoanApplicationService service;
 	
 	@PostMapping(value = "/loan")
-	public ResponseEntity<Object> create(@RequestBody final ApplicationRequest application){
+	public ResponseEntity<Object> create(@RequestBody final ApplicationRequest application) throws AccountNotFoundException{
 		final Response response = service.create(application);
 		return new ResponseEntity<Object>(response, HttpStatus.CREATED);
 	}
@@ -39,7 +41,7 @@ public class LoanApplicationController {
 	}
 	
 	@PutMapping(value = "/loan")
-	public ResponseEntity<Object> update(@RequestBody final LoanApplication application){
+	public ResponseEntity<Object> update(@RequestBody final LoanApplication application) throws LoanApplicationNotFoundException{
 		final Response response = service.update(application);
 		return new ResponseEntity<Object>(response, HttpStatus.ACCEPTED);
 	}

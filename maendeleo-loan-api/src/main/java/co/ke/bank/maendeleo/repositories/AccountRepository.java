@@ -10,7 +10,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
 	public Optional<Account> findByMemberId(Long id);
 	
-	public Optional<Account> findByMemberIdentityNo(int idNo);
-
-
+	public Optional<Account> findByMemberIdentityNo(int identityNo);
 }

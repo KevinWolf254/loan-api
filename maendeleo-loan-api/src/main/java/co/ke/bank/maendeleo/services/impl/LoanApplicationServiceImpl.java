@@ -13,6 +13,8 @@ import co.ke.bank.maendeleo.entities.LoanAmount;
 import co.ke.bank.maendeleo.entities.LoanApplication;
 import co.ke.bank.maendeleo.entities.OtherBankLoan;
 import co.ke.bank.maendeleo.entities.OtherBankLoanAmount;
+import co.ke.bank.maendeleo.exceptions.AccountNotFoundException;
+import co.ke.bank.maendeleo.exceptions.LoanApplicationNotFoundException;
 import co.ke.bank.maendeleo.pojos.ApplicationRequest;
 import co.ke.bank.maendeleo.pojos.Response;
 import co.ke.bank.maendeleo.repositories.AccountRepository;
@@ -40,11 +42,11 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	private BankRepository bankRepo;
 
 	@Override
-	public Response create(final ApplicationRequest application) {		
+	public Response create(final ApplicationRequest application) throws AccountNotFoundException {		
 		// find member's account by member id no
 		final Optional<Account> account = accountRepo.findByMemberIdentityNo(application.getIdentityNo());
 		if (!account.isPresent())
-			return new Response(400, "Bad Request");
+			throw new AccountNotFoundException();
 		
 		// save loan amount
 		final LoanAmount amount = amountRepo.save(application.getLoan().getAmount());
@@ -83,11 +85,11 @@ public class LoanApplicationServiceImpl implements LoanApplicationService {
 	}
 
 	@Override
-	public Response update(final LoanApplication request) {
+	public Response update(final LoanApplication request) throws LoanApplicationNotFoundException {
 		final Optional<LoanApplication> _loan = repo.findById(request.getId());
 		
 		if(!_loan.isPresent())
-			return new Response(400, "Bad Request: Application does not exist");
+			throw new LoanApplicationNotFoundException();
 		
 		final LoanApplication loan = _loan.get();
 		loan.setStatus(request.getStatus());		

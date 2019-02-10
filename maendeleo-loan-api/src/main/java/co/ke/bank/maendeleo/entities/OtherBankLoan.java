@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 //to prevent recursion issues
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 
-//ignore unknown or missing properties during deserialization
+//ignore unknown or missing properties during de_serialization
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 @Entity
@@ -37,7 +37,8 @@ public class OtherBankLoan {
 	@Column(name="repayment_period", nullable=false)
 	private String repaymentPeriod;
 	
-	@ManyToOne(fetch = FetchType.LAZY, 
+	//retrieve bank details
+	@ManyToOne(fetch = FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "bank_id", nullable = false)
 	private Bank bank;
@@ -47,7 +48,8 @@ public class OtherBankLoan {
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
 	
-	@ManyToOne(fetch = FetchType.LAZY, 
+	//retrieve amount details
+	@ManyToOne(fetch = FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "amount_id", nullable = false)
 	private OtherBankLoanAmount amount;
@@ -82,7 +84,6 @@ public class OtherBankLoan {
 	public void setRepaymentPeriod(String repaymentPeriod) {
 		this.repaymentPeriod = repaymentPeriod;
 	}
-//	@JsonIgnore
 	public Bank getBank() {
 		return bank;
 	}
@@ -96,7 +97,6 @@ public class OtherBankLoan {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-//	@JsonIgnore
 	public OtherBankLoanAmount getAmount() {
 		return amount;
 	}

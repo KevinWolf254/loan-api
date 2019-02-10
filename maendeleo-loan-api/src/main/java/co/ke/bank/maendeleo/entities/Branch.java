@@ -36,7 +36,8 @@ public class Branch {
 	@Column(name="name", nullable=false, unique=true)
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.LAZY, 
+	//to chain request for account details
+	@ManyToOne(fetch = FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "bank_id", nullable = false)
 	private Bank bank;
@@ -67,7 +68,6 @@ public class Branch {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@JsonIgnore
 	public Bank getBank() {
 		return bank;
 	}

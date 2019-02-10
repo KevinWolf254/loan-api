@@ -1,4 +1,4 @@
-package co.ke.bank.maendeleo;
+package co.ke.bank.maendeleo.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		LOG.error("MethodArgumentNotValidException: "+errorDetails);
 	    return new ResponseEntity<>(errorDetails, status);
 	  }
+	
+	@ExceptionHandler(value = {MemberNotFoundException.class, InstitutionNotFoundException.class, 
+			EmploymentDetailsNotFoundException.class, AccountNotFoundException.class, LoanApplicationNotFoundException.class})
+	protected ResponseEntity<Object> handleMemberNotFoundExceptions(Exception ex, WebRequest request) {
+		final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+		final int status = badRequest.value();
+		final ResponseError response = new ResponseError(status, ex.getLocalizedMessage());
+		
+		LOG.error("MemberNotFoundException: "+response);
+		return new ResponseEntity<Object>(response, new HttpHeaders(), badRequest);
+	}
 	
 	@ExceptionHandler(value = {Exception.class})
 	protected ResponseEntity<Object> handleExceptions(Exception ex, WebRequest request) {

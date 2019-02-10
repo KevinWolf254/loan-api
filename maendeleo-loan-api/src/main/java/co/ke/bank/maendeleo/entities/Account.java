@@ -37,11 +37,13 @@ public class Account {
 	@Column(name="name", nullable=false, unique=true)
 	private String name;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(fetch = FetchType.LAZY,
+			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY, 
+	//chain retrieval
+	@ManyToOne(fetch = FetchType.EAGER, 
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "branch_id", nullable = false)
 	private Branch branch;
@@ -80,6 +82,7 @@ public class Account {
 	public Member getMember() {
 		return member;
 	}
+	@JsonIgnore
 	public void setMember(Member member) {
 		this.member = member;
 	}

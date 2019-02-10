@@ -45,7 +45,8 @@ public class EmploymentDetails {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 	
-	@ManyToOne(fetch = FetchType.LAZY, 
+	//Fetch type is explicitly EAGER since Institution cannot be retrieved another way
+	@ManyToOne(fetch = FetchType.EAGER,
 			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "institution_id", nullable = false)
 	private Institution institution;

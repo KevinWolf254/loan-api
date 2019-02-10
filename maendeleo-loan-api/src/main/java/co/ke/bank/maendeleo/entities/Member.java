@@ -11,13 +11,17 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import co.ke.bank.maendeleo.enums.IdentityType;
 import co.ke.bank.maendeleo.enums.MaritalStatus;
 
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, 
-property="id")
+//to prevent recursion issues
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+//ignore unknown or missing properties during de_serialization
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 @Entity
 @Table(name="member")
 public class Member {
